@@ -60,7 +60,7 @@ class _DetailPageState extends State<DetailPage> {
                     children: [
                       Container(
                         padding: EdgeInsets.only(bottom:8),
-                        child: Text("title: ${widget.trip.user}  ${authProvider.user.id}", style: TextStyle(
+                        child: Text("title: ${widget.trip.id}", style: TextStyle(
                           fontSize: 20
                         ),),
                       ),
@@ -75,7 +75,8 @@ class _DetailPageState extends State<DetailPage> {
                 Divider(
                   thickness: 2,
                 ),
-                OwnerDetail(),
+                OwnerDetail(userID: authProvider.user.id!, tripOwner: widget.trip.user!, tripID: widget.trip.id!),
+
               ],
             )),
           ],
