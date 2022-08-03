@@ -6,7 +6,6 @@ class Categories extends StatefulWidget {
   _CategoriesState createState() => _CategoriesState();
 }
 
-
 class _CategoriesState extends State<Categories> {
   int selectedCategoryIndex = 0;
   List<String> categoryList = [
@@ -17,7 +16,6 @@ class _CategoriesState extends State<Categories> {
     'South America',
   ];
   Widget _buildCategory(BuildContext context, int index) {
-
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -25,21 +23,21 @@ class _CategoriesState extends State<Categories> {
         });
       },
       child: Padding(
-        padding: EdgeInsets.only(right: appPadding / 4),
+        padding: EdgeInsets.only(right: appPadding / 3.5),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: appPadding / 2),
           decoration: BoxDecoration(
-              color: selectedCategoryIndex == index
-                  ? AppButtons
-                  : Color(0xff3d4047),
-              borderRadius: BorderRadius.circular(20),),
+            color:
+                selectedCategoryIndex == index ? AppButtons : Color(0xff3d4047),
+            borderRadius: BorderRadius.circular(17),
+          ),
           child: Center(
             child: Text(
-              categoryList[index],style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.5,
-              color: selectedCategoryIndex == index ? white : Colors.white
-            ),
+              categoryList[index],
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.5,
+                  color: selectedCategoryIndex == index ? white : Colors.white),
             ),
           ),
         ),
@@ -53,12 +51,11 @@ class _CategoriesState extends State<Categories> {
 
     return Padding(
       padding: const EdgeInsets.only(
-        left: 15,
+        left: 5,
         top: appPadding / 1,
         bottom: 0,
       ),
       child: Container(
-
         height: size.height * 0.05,
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
