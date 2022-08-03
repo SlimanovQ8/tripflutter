@@ -51,11 +51,11 @@ class _DetailPageState extends State<DetailPage> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(bottom: 8),
-                        child: Text(
-                          "title: ${widget.trip.user}  ${authProvider.user.id}",
-                          style: TextStyle(fontSize: 20),
-                        ),
+
+                        padding: EdgeInsets.only(bottom:8),
+                        child: Text("title: ${widget.trip.id}", style: TextStyle(
+                          fontSize: 20
+                        ),),
                       ),
                       Container(
                         child: Text(
@@ -70,7 +70,8 @@ class _DetailPageState extends State<DetailPage> {
                   thickness: 4,
                   color: Color.fromARGB(255, 194, 194, 194),
                 ),
-                OwnerDetail(),
+                OwnerDetail(userID: authProvider.user.id!, tripOwner: widget.trip.user!, tripID: widget.trip.id!),
+
               ],
             )),
           ],

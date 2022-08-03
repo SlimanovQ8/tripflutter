@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:trips_project/Pages/CreateTripPage.dart';
 import 'package:trips_project/Pages/DetailPage.dart';
 import 'package:trips_project/Pages/LoginPage.dart';
+import 'package:trips_project/Pages/UpdateTripPage.dart';
 import 'package:trips_project/models/trip.dart';
 import 'package:trips_project/providers/trips_provider.dart';
 
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
     GoRoute(path: "/homepage", builder: (context, state) => HomePage()),
     GoRoute(path: "/createtrip", builder: (context, state) => CreateTripPage()),
     GoRoute(path: "/DetailPage", builder: (context, state) => DetailPage(trip: state.extra as Trip)),
+    GoRoute(path: "/updatetrip", builder: (context, state) => UpdateTripPage(TripID: state.extra as int)),
   ]);
   }
 

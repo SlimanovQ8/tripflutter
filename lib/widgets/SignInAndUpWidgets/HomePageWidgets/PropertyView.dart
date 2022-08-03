@@ -12,8 +12,7 @@ class PropertyViews extends StatefulWidget {
   _PropertyViewsState createState() => _PropertyViewsState();
 }
 
-List<bool> isClicked = [false, false, false, false, false, false, false];
-
+List <bool> isClicked = [false, false, false, false, false, false, false,  false, false, false, false, false, false, false, false, false, false, false, false];
 class _PropertyViewsState extends State<PropertyViews> {
   @override
   Widget build(BuildContext context) {

@@ -15,6 +15,16 @@ class TripsProvider extends ChangeNotifier {
 
     check = await TripsServices().CreateTrip(title: title, description: description, image: image);
 
+
+    notifyListeners();
+
+    return check;
+  }
+
+  Future<bool?> UpdateTrip(int TripID, String title, String description, File image) async {
+
+    check = await TripsServices().UpdateTrip(TripID: TripID, title: title, description: description, image: image);
+
     notifyListeners();
 
     return check;

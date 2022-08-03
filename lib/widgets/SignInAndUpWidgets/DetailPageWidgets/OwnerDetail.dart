@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:trips_project/constants/constants.dart';
 
 class OwnerDetail extends StatefulWidget {
-  const OwnerDetail({
-    Key? key
+  final int userID;
+  final int tripOwner;
+  final int tripID;
+    const OwnerDetail({
+      Key? key,
+      required this.userID,
+      required this.tripOwner,
+      required this.tripID,
   }) : super(key: key);
 
   @override
@@ -58,8 +65,8 @@ class _OwnerDetailState extends State<OwnerDetail> {
 
           Row(
             children: [
+
               Container(
-                padding: EdgeInsets.only(right: width/30),
 
                 child: Material(
                   borderRadius: BorderRadius.circular(30),
@@ -75,39 +82,43 @@ class _OwnerDetailState extends State<OwnerDetail> {
                             width: 1
                         )
                     ),
-
-                    child: IconButton(
+                    child: widget.tripOwner != widget.userID ? IconButton(
                       icon: Icon(Icons.message),
                       color: AppButtons,
                       //iconSize: 20,
                       onPressed: () {
 
                       },
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-
-                child: Material(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.transparent,
-                  clipBehavior: Clip.antiAlias,
-                  child: Ink(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: secondaryBackground,
-                        border: Border.all(
-                            color: Colors.transparent,
-                            width: 1
-                        )
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.edit),
+                    ) : IconButton(
+                      icon: Icon(Icons.more_horiz),
                       color: AppButtons,
                       //iconSize: 20,
                       onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: new Icon(Icons.delete),
+                                    title: new Text('Delete'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: new Icon(Icons.edit),
+                                    title: new Text('Edit'),
+                                    onTap: () {
+                                      context.push("/updatetrip", extra: widget.tripID);
+                                    },
+                                  ),
+
+                                ],
+                              );
+                            });
+
                       },
                     ),
                   ),
