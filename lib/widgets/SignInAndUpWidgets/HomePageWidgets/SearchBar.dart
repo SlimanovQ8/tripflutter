@@ -13,9 +13,8 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Container(
-
       width: width / 1.1,
-      margin: EdgeInsets.only(top: 40),
+      margin: EdgeInsets.only(top: 10),
       child: Center(
         child: TextField(
           cursorColor: Colors.grey,
