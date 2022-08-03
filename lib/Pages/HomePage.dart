@@ -21,17 +21,19 @@ class _HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
-        builder: (context, authProvider, child) =>
-       Scaffold(
-        backgroundColor: Color(0xffF8F8F8),
+      builder: (context, authProvider, child) => Scaffold(
+        backgroundColor: Color.fromARGB(255, 228, 228, 228),
         appBar: AppBar(
           backgroundColor: Color(0xffF8F8F8),
           elevation: 0.0,
           iconTheme: IconThemeData(color: Colors.black),
-          title: Text("Welcome ${authProvider.user.username}", style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-          ),),
+          title: Text(
+            "Welcome ${authProvider.user.username}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
           centerTitle: true,
           actions: [
             Padding(
@@ -42,12 +44,10 @@ class _HomePageState extends State<HomePage> {
                     Icons.person,
                     size: 26.0,
                   ),
-                )
-            ),
+                )),
           ],
         ),
         drawer: Drawer(
-
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(18.0),
@@ -61,37 +61,34 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-         body: Stack(
-           children: [
-             Column(
-
-               children: [
-                 Container(
-                   height: 200,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Container(
+                  height: 200,
                   // color: Color(0xffffb38a),
-                   child: Column(
-                     children: [
-                       SearchBar(),
-                       Categories(),
-                     ],
-                   ),
-                 ),
-
-                 PropertyViews(),
-
-               ],
-             ),
-           ],
-         ),
-         bottomNavigationBar: BottomBar(),
-         floatingActionButton: FloatingActionButton(
-             onPressed: () {
-               context.push("/createtrip");
-             },
-             backgroundColor: Colors.amber,
-             child: const Icon(Icons.add)),
-         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-       ),
+                  child: Column(
+                    children: [
+                      SearchBar(),
+                      Categories(),
+                    ],
+                  ),
+                ),
+                PropertyViews(),
+              ],
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomBar(),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              context.push("/createtrip");
+            },
+            backgroundColor: Color(0xffF17B00),
+            child: const Icon(Icons.add)),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      ),
     );
   }
 }
