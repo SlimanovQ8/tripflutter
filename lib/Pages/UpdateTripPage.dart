@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:trips_project/models/trip.dart';
 import 'package:trips_project/providers/trips_provider.dart';
 
 import '../models/user.dart';
 import '../providers/auth_providers.dart';
 import 'package:image_picker/image_picker.dart';
 class UpdateTripPage extends StatefulWidget {
-  final int TripID;
+  final Trip TripDetail;
+
   const UpdateTripPage({
     Key? key,
-    required this.TripID
+    required this.TripDetail
   }) : super(key: key);
 
   @override
@@ -105,7 +107,7 @@ class _CreateTripPageState extends State<UpdateTripPage> {
                           border: InputBorder.none,
                           icon: Icon(Icons.title,
                               color: Color.fromRGBO(240, 123, 63, 1)),
-                          hintText: 'Title',
+                          hintText: widget.TripDetail.title,
                         ),
                         onChanged: (value) {
                           setState(() {
@@ -135,7 +137,7 @@ class _CreateTripPageState extends State<UpdateTripPage> {
                           icon: Icon(Icons.description,
                               color: Color.fromRGBO(240, 123, 63, 1)
                           ),
-                          hintText: 'description',
+                          hintText: widget.TripDetail.description,
                         ),
                         onChanged: (value) {
                           description = value;
@@ -193,7 +195,11 @@ class _CreateTripPageState extends State<UpdateTripPage> {
               width:  MediaQuery.of(context).size.width * 0.3 ,
               height: 45,
               margin: EdgeInsets.all( 30),
-              child: ElevatedButton(
+              child: isLoading ? Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xffee8200) ,
+                ),
+              ) : ElevatedButton(
                 child: Text("Update",
                   style: TextStyle(
                       fontSize: 20,
@@ -210,7 +216,7 @@ class _CreateTripPageState extends State<UpdateTripPage> {
 
                 onPressed: () {
 
-                  UpdateTrip(widget.TripID, title, description, _image!);
+                  UpdateTrip(widget.TripDetail.user!, title, description, _image!);
 
 
                 },

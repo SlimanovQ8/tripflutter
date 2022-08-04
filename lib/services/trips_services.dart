@@ -75,7 +75,27 @@ class TripsServices {
 
 
 
-      //token = response.data["token"];
+    } on DioError catch (error) {
+      print(error);
+    }
+    return check;
+  }
+
+  Future<bool> DeleteTrip({ required int TripID}) async {
+    String token = await AuthProvider().getToken();
+    print(token);
+    bool check = false;
+
+    try {
+
+
+      _dio.options.headers["Authorization"] = "Bearer ${token}";
+
+      Response response = await _dio.delete( _testURL + '/trips/${TripID}/delete/');
+      check = true;
+
+
+
     } on DioError catch (error) {
       print(error);
     }

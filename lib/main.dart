@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
     GoRoute(path: "/homepage", builder: (context, state) => HomePage()),
     GoRoute(path: "/createtrip", builder: (context, state) => CreateTripPage()),
     GoRoute(path: "/DetailPage", builder: (context, state) => DetailPage(trip: state.extra as Trip)),
-    GoRoute(path: "/updatetrip", builder: (context, state) => UpdateTripPage(TripID: state.extra as int)),
+    GoRoute(path: "/updatetrip", builder: (context, state) => UpdateTripPage(TripDetail: state.extra as Trip,)),
   ]);
   }
 

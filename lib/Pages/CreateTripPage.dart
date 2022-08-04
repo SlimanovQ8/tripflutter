@@ -189,7 +189,11 @@ class _CreateTripPageState extends State<CreateTripPage> {
               width:  MediaQuery.of(context).size.width * 0.3 ,
               height: 45,
               margin: EdgeInsets.all( 30),
-              child: ElevatedButton(
+              child: isLoading ? Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xffee8200) ,
+                ),
+              ) :ElevatedButton(
                 child: Text("Create",
                   style: TextStyle(
                       fontSize: 20,
@@ -212,23 +216,7 @@ class _CreateTripPageState extends State<CreateTripPage> {
                 },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Don't have an account ?"),
-                InkWell(
-                  child: Text(
-                    " Sign Up",
-                    style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
-                  ),
-                  onTap: () {
-                    context.push("/");
-                  },
-                ),
-              ],
 
-
-            ),
 
           ],
         ),
@@ -237,13 +225,83 @@ class _CreateTripPageState extends State<CreateTripPage> {
   }
   void CreateTrip(String title, String description, File img) async {
     print("j");
+    setState(() {
+      isLoading = true;
 
-    Provider.of<TripsProvider>(context, listen: false)
+    });
+    bool? chk;
+
+    chk = await Provider.of<TripsProvider>(context, listen: false)
         .CreateTrip(title, description, img);
 
-    setState(() {
-      //isLoading = false;
-      context.push("/homepage");
-    });
+    if (chk!) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                title: Text(
+                  "Trip Created",
+                  style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+                ),
+                content: Text(
+                  "Your trip ${title} has been created successfully!",
+                  style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      setState(() {
+                        context.push("/homepage");
+                      });
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(
+                          color: Color.fromRGBO(240, 123, 63, 1)
+                      ),
+                    ),
+                  ),
+
+                ],
+              ));
+    }
+    else {
+      setState(() {
+        isLoading = true;
+      });
+      showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                title: Text(
+                  "Error",
+                  style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+                ),
+                content: Text(
+                  "There is an error occurred!",
+                  style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      setState(() {
+                        context.push("/homepage");
+                      });
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(
+                          color: Color.fromRGBO(240, 123, 63, 1)
+                      ),
+                    ),
+                  ),
+
+                ],
+              ));
   }
-}
+  }
+
+
+
+  }
+

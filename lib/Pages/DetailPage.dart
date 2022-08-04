@@ -70,7 +70,7 @@ class _DetailPageState extends State<DetailPage> {
                   thickness: 4,
                   color: Color.fromARGB(255, 194, 194, 194),
                 ),
-                OwnerDetail(userID: authProvider.user.id!, tripOwner: widget.trip.user!, tripID: widget.trip.id!),
+                OwnerDetail(UserDetail: authProvider.user, TripDetail: widget.trip,),
 
               ],
             )),

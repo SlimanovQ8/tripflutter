@@ -2,18 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'package:trips_project/constants/constants.dart';
+import 'package:trips_project/models/trip.dart';
+import 'package:trips_project/models/user.dart';
+
+import '../../../providers/trips_provider.dart';
 
 class OwnerDetail extends StatefulWidget {
-  final int userID;
-  final int tripOwner;
-  final int tripID;
+  final User UserDetail;
+  final Trip TripDetail;
     const OwnerDetail({
       Key? key,
-      required this.userID,
-      required this.tripOwner,
-      required this.tripID,
+      required this.UserDetail,
+      required this.TripDetail,
   }) : super(key: key);
 
   @override
@@ -23,241 +26,169 @@ class OwnerDetail extends StatefulWidget {
 class _OwnerDetailState extends State<OwnerDetail> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     double height = size.height;
     double width = size.width;
 
     return Container(
       margin: EdgeInsets.only(top: 15),
-      padding: EdgeInsets.only(left: 15,right: 15, bottom: 15),
+      padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
       width: width,
       child: Row(
 
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-        children: [
+          children: [
 
-          Row(
-            children: [
-              Container(
-                //padding: EdgeInsetsDirectional.fromSTEB(15, 0, 0, 0),
-                child:   ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Icon(Icons.person)
+            Row(
+              children: [
+                Container(
+                  //padding: EdgeInsetsDirectional.fromSTEB(15, 0, 0, 0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Icon(Icons.person)
+                  ),
                 ),
-              ),
-              Container(
-                //width: 100,
-                height: 40,
-                  padding: EdgeInsets.only(left: 12),
-                  child:Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Suliman Al-mamari "),
-                      Text("Owner")
-                    ],
-                  )
-              ),
-            ],
-          ),
-
-
-          Row(
-            children: [
-
-              Container(
-
-                child: Material(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.transparent,
-                  clipBehavior: Clip.antiAlias,
-                  child: Ink(
-                    width: 40,
+                Container(
+                  //width: 100,
                     height: 40,
-                    decoration: BoxDecoration(
-                        color: secondaryBackground,
-                        border: Border.all(
-                            color: Colors.transparent,
-                            width: 1
-                        )
-                    ),
-                    child: widget.tripOwner != widget.userID ? IconButton(
-                      icon: Icon(Icons.message),
-                      color: AppButtons,
-                      //iconSize: 20,
-                      onPressed: () {
+                    padding: EdgeInsets.only(left: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(widget.UserDetail.username!),
+                        Text("Owner : ${widget.TripDetail.user}  ${widget
+                            .UserDetail.id}")
+                      ],
+                    )
+                ),
+              ],
+            ),
 
-                      },
-                    ) : IconButton(
-                      icon: Icon(Icons.more_horiz),
-                      color: AppButtons,
-                      //iconSize: 20,
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  ListTile(
-                                    leading: new Icon(Icons.delete),
-                                    title: new Text('Delete'),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: new Icon(Icons.edit),
-                                    title: new Text('Edit'),
-                                    onTap: () {
-                                      context.push("/updatetrip", extra: widget.tripID);
-                                    },
-                                  ),
 
-                                ],
-                              );
-                            });
+            Row(
+              children: [
 
-                      },
+                Container(
+
+                  child: Material(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.transparent,
+                    clipBehavior: Clip.antiAlias,
+                    child: Ink(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: secondaryBackground,
+                          border: Border.all(
+                              color: Colors.transparent,
+                              width: 1
+                          )
+                      ),
+                      child: widget.TripDetail.user != widget.UserDetail.id
+                          ? IconButton(
+                        icon: Icon(Icons.message),
+                        color: AppButtons,
+                        //iconSize: 20,
+                        onPressed: () {
+                          DeleteTrip(widget.TripDetail.id!);
+                        },
+                      )
+                          : IconButton(
+                        icon: Icon(Icons.more_horiz),
+                        color: AppButtons,
+                        //iconSize: 20,
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: new Icon(Icons.delete),
+                                      title: new Text('Delete'),
+                                      onTap: () {
+                                        DeleteTrip(widget.TripDetail.id!);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: new Icon(Icons.edit),
+                                      title: new Text('Edit'),
+                                      onTap: () {
+                                        context.push("/updatetrip",
+                                            extra: widget.TripDetail);
+                                      },
+                                    ),
+
+                                  ],
+                                );
+                              });
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
 
-        ]
+          ]
       ),
     );
+  }
 
-    // return  SafeArea(
-    //   left: true,
-    //   right: true,
-    //   child: Container(
-    //
-    //    color: Colors.red,
-    //     margin: EdgeInsets.fromLTRB(10, appPadding, 0 , appPadding),
-    //     width: width,
-    //     child: Row(
-    //       mainAxisSize: MainAxisSize.max,
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         ClipRRect(
-    //           borderRadius: BorderRadius.circular(100),
-    //           child: Image.asset(
-    //             'assets/villa.jfif',
-    //             width: 65,
-    //             height: 65,
-    //             fit: BoxFit.cover,
-    //           ),
-    //         ),
-    //         Container(
-    //
-    //           margin: EdgeInsets.only(left: 10),
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               Container(
-    //                 // margin: EdgeInsets.only(left: 10),
-    //
-    //                 child: Text("Suliman Almamari", style: TextStyle(
-    //                     fontSize: 16
-    //                 ),),
-    //
-    //               ),
-    //               Container(
-    //                 margin: EdgeInsets.only( top: 10),
-    //
-    //                 child: Text("Owner", style: TextStyle(
-    //                     fontSize: 16
-    //                 ),),
-    //               ),
-    //             ],
-    //           ),
-    //
-    //         ),
-    //           Align(
-    //
-    //           child: Container(
-    //
-    //             width: width/2.5 ,
-    //             color: Colors.green,
-    //       //      margin: EdgeInsets.fromLTRB(0, 10, 15 , width *0.12),
-    //
-    //             child: Row(
-    //
-    //               children: [
-    //
-    //                 Container(
-    //
-    //
-    //                   padding: EdgeInsets.only(right: width/30),
-    //
-    //                   child: Material(
-    //                     borderRadius: BorderRadius.circular(30),
-    //                     color: Colors.transparent,
-    //                     clipBehavior: Clip.antiAlias,
-    //                     child: Ink(
-    //                       width: 40,
-    //                       height: 40,
-    //                       decoration: BoxDecoration(
-    //                           color: secondaryBackground,
-    //                           border: Border.all(
-    //                               color: Colors.transparent,
-    //                               width: 1
-    //                           )
-    //                       ),
-    //
-    //                       child: IconButton(
-    //                         icon: Icon(Icons.message),
-    //                         color: AppButtons,
-    //                         //iconSize: 20,
-    //                         onPressed: () {
-    //
-    //                         },
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //
-    //                 Container(
-    //
-    //                   child: Material(
-    //                     borderRadius: BorderRadius.circular(30),
-    //                     color: Colors.transparent,
-    //                     clipBehavior: Clip.antiAlias,
-    //                     child: Ink(
-    //                       width: 40,
-    //                       height: 40,
-    //                       decoration: BoxDecoration(
-    //                           color: secondaryBackground,
-    //                           border: Border.all(
-    //                               color: Colors.transparent,
-    //                               width: 1
-    //                           )
-    //                       ),
-    //
-    //                       child: IconButton(
-    //                         icon: Icon(Icons.call),
-    //                         color: AppButtons,
-    //                         //iconSize: 20,
-    //                         onPressed: () {
-    //
-    //                         },
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         )
-    //
-    //       ],
-    //     ),
-    //   ),
-    // );
+  void DeleteTrip(int TripID,) async {
+    print("j");
+    bool? chk;
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            AlertDialog(
+              title: Text(
+                "Are You sure?",
+                style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+              ),
+              content: Text(
+                "Do you want to delete this trip?",
+                style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                   chk =  await Provider.of<TripsProvider>(context, listen: false)
+                        .DeleteTrip(TripID);
+
+                    setState(() {
+                      if (chk!)
+
+                      context.push("/homepage");
+                    });
+                  },
+                  child: Text(
+                    'Yes',
+                    style: TextStyle(
+                      color: Colors.grey
+                    ),
+                  ),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(primary: Colors.grey),
+                  onPressed: () {
+                    setState(() {
+                      context.pop();
+                    });
+                  },
+                  child: Text(
+                    'No',
+                    style: TextStyle(color: Color.fromRGBO(240, 123, 63, 1)),
+                  ),
+                ),
+              ],
+            ));
   }
 }
