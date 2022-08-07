@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:trips_project/Pages/viewProfile.dart';
 
 import 'package:trips_project/constants/constants.dart';
 import 'package:trips_project/models/trip.dart';
 import 'package:trips_project/models/user.dart';
+import 'package:trips_project/providers/auth_providers.dart';
 
 import '../../../providers/trips_provider.dart';
 
@@ -42,33 +44,93 @@ class _OwnerDetailState extends State<OwnerDetail> {
 
           children: [
 
-            Row(
-              children: [
-                Container(
-                  //padding: EdgeInsetsDirectional.fromSTEB(15, 0, 0, 0),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Icon(Icons.person)
-                  ),
-                ),
-                Container(
-                  //width: 100,
-                    height: 40,
-                    padding: EdgeInsets.only(left: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.UserDetail.username!),
-                        Text("Owner : ${widget.TripDetail.user}  ${widget
-                            .UserDetail.id}")
-                      ],
-                    )
-                ),
-              ],
+
+
+            FutureBuilder(
+              future: Provider.of<AuthProvider>(context, listen: false).getUsers(widget.TripDetail.user!),
+              builder: (context, dataSnapshot) {
+                if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Text(""
+                  );
+                } else {
+                  if (dataSnapshot.error != null) {
+                    print(dataSnapshot.error);
+
+                    return const Center(
+                      child: Text('Ther'),
+                    );
+                  } else {
+                    return Consumer<AuthProvider>(
+                        builder: (context, auth, child) =>
+
+
+                                    FutureBuilder(
+                                      future: Provider.of<AuthProvider>(context, listen: false).getUserProfile(widget.TripDetail.user!),
+                                      builder: (context, dataSnapshot) {
+                                        if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                                          return const Text(""
+                                          );
+                                        } else {
+                                          if (dataSnapshot.error != null) {
+                                            print(dataSnapshot.error);
+
+                                            return const Center(
+                                              child: Text('Ther'),
+                                            );
+                                          } else {
+                                            return Consumer<AuthProvider>(
+                                              builder: (context, user, child) =>
+
+
+                                                  Container(
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(builder: (context) =>  ViewProfile(trip: widget.TripDetail, prof: user.getUseProfile[0], userr: widget.UserDetail)),
+                                                          );
+                                                        },
+                                                      child: Row(
+                                                        children: [
+                                                          CircleAvatar(
+                                                            backgroundImage: NetworkImage(user.getUseProfile[0].image!),
+                                                          ),
+
+                                                          Container(
+                                                            //width: 100,
+                                                              height: 40,
+                                                              padding: EdgeInsets.only(left: 12),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+
+                                                                  Text(auth.users[0].username!),
+                                                                  Text("Owner ")
+                                                                ],
+                                                              )
+                                                          ),
+                                                        ],
+
+                                                      ),
+                                                    ),
+                                                  )
+
+
+                                            );
+                                          }
+                                        }
+                                      },
+                                    ),
+
+
+
+
+                    );
+                  }
+                }
+              },
             ),
-
-
             Row(
               children: [
 
@@ -88,7 +150,7 @@ class _OwnerDetailState extends State<OwnerDetail> {
                               width: 1
                           )
                       ),
-                      child: widget.TripDetail.user != widget.UserDetail.id
+                      child: widget.TripDetail.user != widget.UserDetail.userID
                           ? IconButton(
                         icon: Icon(Icons.message),
                         color: AppButtons,

@@ -19,6 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String username = "";
   String email = "";
   String password = "";
+  bool _isLoading = false;
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
@@ -194,7 +195,11 @@ class _SignUpPageState extends State<SignUpPage> {
               width:  MediaQuery.of(context).size.width * 0.3 ,
               height: 45,
               margin: EdgeInsets.all( 30),
-              child: ElevatedButton(
+              child: _isLoading ? Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xffee8200),
+                ),
+              ): ElevatedButton(
                 child: Text("Register",
                   style: TextStyle(
                     fontSize: 20,
@@ -244,17 +249,31 @@ class _SignUpPageState extends State<SignUpPage> {
   }
   void SignUp(String name, String email, String username, String password, ) async {
     print("j");
+    bool? chk;
 
-    Provider.of<AuthProvider>(context, listen: false).signup(user: User(
+    setState(() {
+      _isLoading = true;
+
+    });
+    chk = await Provider.of<AuthProvider>(context, listen: false).signup(user: User(
       first_name: name,
       email: email,
       username: username,
       password: password,
     ));
+    print(chk);
+    if (chk)
+      {
+        context.push("/homepage");
+        setState(() {
+          _isLoading = false;
+        });
 
-    setState(() {
-      //isLoading = false;
+     }
+    else {
+      _isLoading = false;
+      }
 
-    });
+
   }
 }

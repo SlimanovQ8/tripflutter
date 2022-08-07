@@ -1,11 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:trips_project/constants/constants.dart';
 
+import '../../../models/trip.dart';
+
 class ImageFlipper extends StatefulWidget {
-  const ImageFlipper({Key? key}) : super(key: key);
+  final Trip TripDetail;
+
+  const ImageFlipper({
+    Key? key,
+    required this.TripDetail
+  }) : super(key: key);
 
   @override
   _ImageFlipperState createState() => _ImageFlipperState();
@@ -40,25 +48,14 @@ class _ImageFlipperState extends State<ImageFlipper> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  'assets/images/trips.jpg',
+                child: Image.network(
+                  widget.TripDetail.image!,
                   width: 100,
                   height: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ),
-              Image.network(
-                'https://picsum.photos/seed/65/600',
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
-              Image.network(
-                'https://picsum.photos/seed/641/600',
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+
             ],
           ),
           Align(
@@ -68,7 +65,7 @@ class _ImageFlipperState extends State<ImageFlipper> {
               child: SmoothPageIndicator(
                 controller: pageViewController ??=
                     PageController(initialPage: 0),
-                count: 3,
+                count: 1,
                 axisDirection: Axis.horizontal,
                 onDotClicked: (i) {
                   pageViewController!.animateToPage(
@@ -128,7 +125,7 @@ class _ImageFlipperState extends State<ImageFlipper> {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  context.pop();
                   setState(() {
                     //isClicked[index] = !isClicked[index];
                   });

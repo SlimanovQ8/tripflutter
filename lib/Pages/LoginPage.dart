@@ -16,6 +16,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   String username = "";
+  bool _isLoading = false;
+
   String password = "";
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +138,11 @@ class _LoginPageState extends State<LoginPage> {
               width:  MediaQuery.of(context).size.width * 0.3 ,
               height: 45,
               margin: EdgeInsets.all( 30),
-              child: ElevatedButton(
+              child: _isLoading ? Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xffee8200),
+                ),
+              ): ElevatedButton(
                 child: Text("Login",
                   style: TextStyle(
                       fontSize: 20,
@@ -185,17 +191,34 @@ class _LoginPageState extends State<LoginPage> {
   void SignIn(String username, String password, ) async {
     print("j");
 
-   bool  b =  await Provider.of<AuthProvider>(context, listen: false).signin(user: User(
+    print("j");
+    bool? chk;
 
-      username: username,
-      password: password,
-     id: 1
-    ));
-
-     setState(() {
-      if(b)
-      context.push("/homepage");
+    setState(() {
+      _isLoading = true;
 
     });
+    chk = await Provider.of<AuthProvider>(context, listen: false).signin(user: User(
+
+        username: username,
+        password: password,
+    ));
+
+    print(chk);
+    if (chk)
+    {
+      context.push("/homepage");
+      setState(() {
+        _isLoading = false;
+      });
+
+    }
+    else {
+      _isLoading = false;
+    }
+
+
+
+
   }
 }

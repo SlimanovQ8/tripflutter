@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:trips_project/providers/trips_provider.dart';
 
 import '../../../Pages/HomePage.dart';
+import '../../../providers/auth_providers.dart';
 
 class PropertyViews extends StatefulWidget {
   const PropertyViews({Key? key}) : super(key: key);
@@ -19,7 +20,42 @@ class _PropertyViewsState extends State<PropertyViews> {
     double width = MediaQuery.of(context).size.width;
     return Expanded(
       flex: 4,
-      child: FutureBuilder(
+      child: /*utureBuilder(
+        future: Provider.of<AuthProvider>(context, listen: false).getProfile(2),
+        builder: (context, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (dataSnapshot.error != null) {
+              print(dataSnapshot.error);
+
+              return const Center(
+                child: Text('There are no trips!'),
+              );
+            } else {
+              return Consumer<AuthProvider>(
+                builder: (context, profileProvider, child) =>
+                    Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: GestureDetector(
+                          onTap: () {
+
+                          },
+                          child:  Image(
+
+                            image: NetworkImage(
+                              //"assets/images/trips.jpg"
+                                profileProvider.profile.image!),
+                          ),
+                        )),
+              );
+            }
+          }
+        },
+       ),*/
+    FutureBuilder(
         future: Provider.of<TripsProvider>(context, listen: false).getTrips(),
         builder: (context, dataSnapshot) {
           if (dataSnapshot.connectionState == ConnectionState.waiting) {
@@ -28,8 +64,10 @@ class _PropertyViewsState extends State<PropertyViews> {
             );
           } else {
             if (dataSnapshot.error != null) {
+              print(dataSnapshot.error);
+
               return const Center(
-                child: Text('An error occurred'),
+                child: Text('There are no trips', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
               );
             } else {
               return Consumer<TripsProvider>(

@@ -8,9 +8,11 @@ class User {
   String? email;
   String? username;
   String? password;
+  int? userID ;
 
   User({
     this.id,
+    this.userID,
     this.first_name,
     this.email,
       this.username,

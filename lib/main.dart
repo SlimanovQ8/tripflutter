@@ -5,7 +5,11 @@ import 'package:trips_project/Pages/CreateTripPage.dart';
 import 'package:trips_project/Pages/DetailPage.dart';
 import 'package:trips_project/Pages/LoginPage.dart';
 import 'package:trips_project/Pages/UpdateTripPage.dart';
+import 'package:trips_project/Pages/editProfile.dart';
+import 'package:trips_project/Pages/viewProfile.dart';
 import 'package:trips_project/models/trip.dart';
+import 'package:trips_project/models/user.dart';
+import 'package:trips_project/models/userProfile.dart';
 import 'package:trips_project/providers/trips_provider.dart';
 
 import 'Pages/HomePage.dart';
@@ -42,11 +46,13 @@ class MyApp extends StatelessWidget {
   final _router =
   GoRouter(initialLocation: 1 == 2 ? "/signin" : "/", routes: [
     GoRoute(path: "/", builder: (context, state) => SignUpPage()),
+    GoRoute(path: "/ViewProfile", builder: (context, state) => ViewProfile(trip: state.extra as Trip, prof: state.extra as UserProfile, userr: state.extra as User)),
     GoRoute(path: "/signin", builder: (context, state) => LoginPage()),
     GoRoute(path: "/homepage", builder: (context, state) => HomePage()),
     GoRoute(path: "/createtrip", builder: (context, state) => CreateTripPage()),
     GoRoute(path: "/DetailPage", builder: (context, state) => DetailPage(trip: state.extra as Trip)),
     GoRoute(path: "/updatetrip", builder: (context, state) => UpdateTripPage(TripDetail: state.extra as Trip,)),
+    GoRoute(path: "/editProfile", builder: (context, state) => EditProfilePage()),
   ]);
   }
 

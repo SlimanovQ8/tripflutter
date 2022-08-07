@@ -12,8 +12,23 @@ class TripsServices {
 
   Future<List<Trip>> getTripsServices() async {
     List<Trip> trips = [];
+
     try {
       Response response = await _dio.get(_testURL + '/trips-list');
+      trips =
+          (response.data as List).map((trip) => Trip.fromJson(trip)).toList();
+      print(trips[0].image);
+    } on DioError catch (error) {
+      print(error);
+    }
+    return trips;
+  }
+
+
+  Future<List<Trip>> getUserTripsServices({ required int UserID}) async {
+    List<Trip> trips = [];
+    try {
+      Response response = await _dio.get(_testURL + '/trips-list/${UserID}');
       trips =
           (response.data as List).map((trip) => Trip.fromJson(trip)).toList();
       print(trips[0].image);
@@ -35,6 +50,8 @@ class TripsServices {
         "description": description,
 
         "image": await MultipartFile.fromFile(image.path),
+        "usernake": "username",
+
       });
       _dio.options.headers["Authorization"] = "Bearer ${token}";
 
@@ -102,5 +119,22 @@ class TripsServices {
     return check;
   }
 
+  Future<bool> getUserTrip({ required int UserID}) async {
+    String token = await AuthProvider().getToken();
+    print(token);
+    bool check = false;
+
+    try {
+
+      Response response = await _dio.get(_testURL + '/trips-list/${UserID}/');
+      check = true;
+
+
+
+    } on DioError catch (error) {
+      print(error);
+    }
+    return check;
+  }
 }
 

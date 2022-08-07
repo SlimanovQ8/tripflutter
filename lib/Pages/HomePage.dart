@@ -39,8 +39,10 @@ class _HomePageState extends State<HomePage> {
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
-                  onTap: () {},
-                  child: Icon(
+                  onTap: () {
+                    context.push("/editProfile");
+                  },
+                  child:  Icon(
                     Icons.person,
                     size: 26.0,
                   ),

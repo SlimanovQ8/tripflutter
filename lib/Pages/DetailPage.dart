@@ -42,7 +42,7 @@ class _DetailPageState extends State<DetailPage> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               children: [
-                ImageFlipper(),
+                ImageFlipper(TripDetail: widget.trip,),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   padding: EdgeInsets.all(10),
@@ -53,7 +53,7 @@ class _DetailPageState extends State<DetailPage> {
                       Container(
 
                         padding: EdgeInsets.only(bottom:8),
-                        child: Text("title: ${widget.trip.id}", style: TextStyle(
+                        child: Text("title: ${widget.trip.title}", style: TextStyle(
                           fontSize: 20
                         ),),
                       ),
